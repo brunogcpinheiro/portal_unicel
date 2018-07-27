@@ -10,13 +10,17 @@ class MembroController {
    * Show a list of all members.
    * GET members
    */
-  async index({ request, response, view }) {}
+  async index() {
+    const membros = Membro.all();
+
+    return membros;
+  }
 
   /**
-   * Render a form to be used for creating a new member.
-   * GET members/create
+   * Create/save a new member.
+   * POST members
    */
-  async create({ request }) {
+  async store({ request }) {
     const data = request.only([
       "tipo",
       "celula",
@@ -45,34 +49,49 @@ class MembroController {
   }
 
   /**
-   * Create/save a new member.
-   * POST members
-   */
-  async store({ request, response }) {}
-
-  /**
-   * Display a single member.
-   * GET members/:id
-   */
-  async show({ params, request, response, view }) {}
-
-  /**
-   * Render a form to update an existing member.
-   * GET members/:id/edit
-   */
-  async edit({ params, request, response, view }) {}
-
-  /**
    * Update member details.
    * PUT or PATCH members/:id
    */
-  async update({ params, request, response }) {}
+  async update({ params, request }) {
+    const data = request.only([
+      "tipo",
+      "celula",
+      "nome",
+      "email",
+      "nascimento",
+      "sexo",
+      "estadocivil",
+      "cpf",
+      "telefone",
+      "celular",
+      "discipulador",
+      "responsavel",
+      "cep",
+      "estado",
+      "cidade",
+      "logradouro",
+      "numero",
+      "bairro",
+      "complemento"
+    ]);
+
+    const membro = await Membro.find(params.id);
+    membro.merge(data);
+    await membro.save();
+    return membro;
+  }
 
   /**
    * Delete a member with id.
    * DELETE members/:id
    */
-  async destroy({ params, request, response }) {}
+  async destroy({ params }) {
+    const membro = await Membro.find(params.id);
+
+    await membro.delete();
+
+    return "Membro deletado";
+  }
 }
 
 module.exports = MembroController;

@@ -6,13 +6,6 @@ class MembroSchema extends Schema {
   up() {
     this.create("membros", table => {
       table.increments();
-      table
-        .integer("user_id")
-        .unsigned()
-        .references("id")
-        .inTable("users")
-        .onUpdate("CASCADE")
-        .onDelete("CASCADE");
       table.string("tipo").notNullable();
       table.string("celula").notNullable();
       table.string("nome").notNullable();
